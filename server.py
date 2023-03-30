@@ -256,6 +256,7 @@ class imageRequestHandler(tornado.web.RequestHandler):
 
 
 class easymapRequestHandler(tornado.web.RequestHandler):
+   
    def initialize(self):
       self.template_loader = tornado.template.Loader("templates")
 
@@ -314,6 +315,7 @@ class easymapRequestHandler(tornado.web.RequestHandler):
          return self.template_loader.load('standard.html').generate(image_url=image_url,title=title,terms=terms,link=link,ref=ref,logo=logo,css=css)
 
    def get(self):
+      print("check")
       #Time after which a new image will be generated instead of cache version (0 to force generation)
       cachedays = self.get_argument('cachedays',default='31')
       cachedays = int(re.sub(r'[^0-9]', '', cachedays)) #sanitise
@@ -379,16 +381,17 @@ bboxes.update({'outer-heb':(-8318.900640988548, 770045.3385805918, 163674.859963
 bboxes.update({'uk':(-236382.64339983894, -16505.0236, 681196.3657, 1240275.0454)})
 
 if __name__ == "__main__":
-#   https_server = tornado.httpserver.HTTPServer(application)
-   https_server = tornado.httpserver.HTTPServer(application, ssl_options={
-      "certfile": "/home/ubuntu/.keys/.cert",
-      "keyfile": "/home/ubuntu/.keys/.key",
-      "ca_certs": "/home/ubuntu/.keys/.intr"
-   })
-   https_server.bind(8443)
-   https_server.start(8)
-# dev version:
-#http_server.listen(8888, address='127.0.0.1')
+   https_server = tornado.httpserver.HTTPServer(application)
+   # https_server = tornado.httpserver.HTTPServer(application, ssl_options={
+   #    "certfile": "/home/ubuntu/.keys/.cert",
+   #    "keyfile": "/home/ubuntu/.keys/.key",
+   #    "ca_certs": "/home/ubuntu/.keys/.intr"
+   # })
+   #https_server.bind(8000)
+   #https_server.start(8)
+   # dev version:
+
+   https_server.listen(8080, address="localhost")
    tornado.ioloop.IOLoop.current().start()
 
 
